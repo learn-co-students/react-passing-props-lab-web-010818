@@ -1,34 +1,27 @@
 import React, { Component } from 'react';
 
-class Filter extends Component {
-  constructor() {
-    super();
+const Filter = (props) => {
 
-    this.state = {
-      filters: []
-    };
-  }
+  const {handleChange, filters} = props
+// handleChange={handleFilterChange} filters={filters}
+  // componentWillMount() {
+  //   this.fetchFilters();
+  // }
+  //
 
-  componentWillMount() {
-    this.fetchFilters();
-  }
+  return (
+    <select onChange={handleChange} defaultValue='all'>
+      <option value='all'>All</option>
+      {filters.map(filter =>
+        <option key={filter} value={filter}>{filter}</option>
+      )}
+    </select>
+  );
+}
 
-  fetchFilters = () => {
-    fetch('/api/fruit_types')
-      .then(response => response.json())
-      .then(filters => this.setState({ filters }));
-  }
-
-  render() {
-    return (
-      <select onChange={this.props.handleChange} defaultValue='all'>
-        <option value='all'>All</option>
-        {this.state.filters.map(filter =>
-          <option key={filter} value={filter}>{filter}</option>
-        )}
-      </select>
-    );
-  }
+Filter.defaultProps = {
+  handleChange: null,
+  filters: []
 }
 
 export default Filter;
