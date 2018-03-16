@@ -1,29 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
+import uuid from 'uuid'
 
-class FilteredFruitList extends Component {
-  constructor(props) {
-    super(props);
+const FilteredFruitList = (props) => {
+  let filteredFruit;
 
-    this.state = {
-      items: []
-    };
+  if (props.filter === null || props.filter === 'all') {
+    filteredFruit = props.fruit
+  } else {
+    filteredFruit = props.fruit.filter((item) => props.filter === item.fruit_type)
   }
 
-  componentDidMount() {
-    fetch('/api/fruit')
-      .then(response => response.json())
-      .then(items => this.setState({ items }));
-  }
-
-  render() {
-    const list = !this.props.filter || this.props.filter === 'all' ? this.state.items : this.state.items.filter(i => i.fruit_type === this.props.filter);
-
-    return (
-      <ul className="fruit-list">
-        {list.map((item, index) => <li key={index}>{item.char}</li>)}
-      </ul>
-    );
-  }
+  return (
+    <ul className="fruit-list">
+      { filteredFruit.map((item) => <li key={uuid()}>{item.char}</li> ) }
+    </ul>
+  );
 }
+
+FilteredFruitList.defaultProps = {
+  filter: '',
+  fruit: [],
+};
+
 
 export default FilteredFruitList;
