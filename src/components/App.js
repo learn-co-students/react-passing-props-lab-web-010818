@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import FruitBasket from './FruitBasket';
 
-const App = () => <FruitBasket />;
+export default class App extends Component {
+  state = { fruits: [], filter: '' };
 
-export default App;
+  componentDidMount() {
+    fetch('/api/fruit')
+      .then(response => response.json())
+      .then(fruits => this.setState({ fruits }));
+  }
+
+  render() {
+    return <FruitBasket />;
+  }
+}
